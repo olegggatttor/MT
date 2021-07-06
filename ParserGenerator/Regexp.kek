@@ -1,0 +1,19 @@
+> s
+
+< str : String?>
+
+s => e { str = e0.str } | EPS { str = "" } ;
+e => r es { str = r0.str!! + es0.str!! } ;
+es => OR r es { str = "|" + r0.str!! + es0.str!!  } | EPS { str = "" } ;
+r => t rs { str = t0.str!! + rs0.str!! } ;
+rs => t rs { str = t0.str!! + rs0.str!! } | EPS { str = "" } ;
+t => ALPHA ts { str = getChild(0).str!! + ts0.str!! }
+   | OPEN e CLOSE ts { str = "(" + e0.str!! + ")" + ts0.str!! } ;
+ts => STAR { str = "*" } | EPS { str = "" } ;
+
+"[ \n\t\r]" => skip ;
+OR := "\\|" ;
+ALPHA := "[a-z]" { str = getParsed() };
+OPEN := "\\(" ;
+CLOSE := "\\)" ;
+STAR := "\\*" ;

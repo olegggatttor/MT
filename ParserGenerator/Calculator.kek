@@ -1,0 +1,24 @@
+> e
+
+< value : Int? >
+
+e => t es {{(t0.value)}} { value = es0.value };
+es {{acc : Int? }} => PLUS t es{{(acc!! + t0.value!!)}} { value = es0.value  }
+                 | MINUS t es{{(acc!! - t0.value!!)}} { value = es0.value  }
+                 | EPS { value = acc };
+t => f ts {{(f0.value)}} { value = ts0.value } ;
+ts {{ acc : Int?}} => MUL f ts{{(acc!! * f0.value!!)}} { value = ts0.value }
+                 | DIV f ts{{(acc!! / f0.value!!)}} { value = ts0.value }
+                 | MOD f ts{{(acc!! % f0.value!!)}} { value = ts0.value }
+                 | EPS { value = acc };
+f => NUM { value = getChild(0).value }  | OPEN e CLOSE { value = e0.value };
+
+"[ \n\t\r]" => skip ;
+PLUS := "\\+" ;
+MINUS := "-" ;
+DIV := "/" ;
+MOD := "%" ;
+MUL := "\\*" ;
+NUM := "[0-9]+" { value = getParsed().toInt() } ;
+OPEN := "\\(" ;
+CLOSE := "\\)" ;
